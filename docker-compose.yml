@@ -17,7 +17,7 @@ services:
       context: ./smartsave-dd-main
       dockerfile: Dockerfile
       args:
-        VITE_ANALYZE_API_URL: ${VITE_ANALYZE_API_URL:-http://20.235.243.245:3000/api/analyze}
+        VITE_ANALYZE_API_URL: ${VITE_ANALYZE_API_URL:http://20.235.243.245:3000/api/analyze}
     depends_on:
       - backend
     ports:
