@@ -15,6 +15,13 @@ export interface InventoryItem {
   keywords: string[];
 }
 
+// Helper to generate relative dates
+const getDateString = (daysOffset: number) => {
+  const date = new Date();
+  date.setDate(date.getDate() + daysOffset);
+  return date.toISOString().split('T')[0];
+};
+
 export const sampleInventory: InventoryItem[] = [
   // Fruits
   {
@@ -28,8 +35,8 @@ export const sampleInventory: InventoryItem[] = [
     originalPrice: 0.89,
     cost: 0.45,
     location: "Produce Section A",
-    receivedDate: "2025-01-08",
-    expiryDate: "2025-01-15",
+    receivedDate: getDateString(-3),  // 3 days ago
+    expiryDate: getDateString(4),     // 4 days from now (7 total)
     optimal_temp: "58-60°F",
     keywords: ["banana", "yellow", "curved", "bunch", "organic"]
   },
@@ -110,8 +117,8 @@ export const sampleInventory: InventoryItem[] = [
     originalPrice: 2.49,
     cost: 1.25,
     location: "Produce Section D",
-    receivedDate: "2025-01-09",
-    expiryDate: "2025-01-16",
+    receivedDate: getDateString(-2),  // 2 days ago
+    expiryDate: getDateString(5),     // 5 days from now (7 total)
     optimal_temp: "55-70°F",
     keywords: ["tomato", "red", "oval", "roma", "vegetable"]
   },
@@ -192,8 +199,8 @@ export const sampleInventory: InventoryItem[] = [
     originalPrice: 4.99,
     cost: 2.75,
     location: "Dairy Cooler A",
-    receivedDate: "2025-01-09",
-    expiryDate: "2025-01-19",
+    receivedDate: getDateString(-2),  // 2 days ago
+    expiryDate: getDateString(8),     // 8 days from now (10 total)
     optimal_temp: "34-38°F",
     keywords: ["milk", "gallon", "white", "jug", "dairy", "whole"]
   },
