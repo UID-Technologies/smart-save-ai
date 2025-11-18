@@ -1,10 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import OpenAI from 'openai'
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-})
-
 const allowedOrigin = process.env.CORS_ALLOWED_ORIGIN || '*'
 const corsHeaders: Record<string, string> = {
   'Access-Control-Allow-Origin': allowedOrigin,
@@ -35,17 +31,16 @@ interface AnalyzeRequest {
   observations: string
 }
 
+const getOpenAIClient = () => {
+  const apiKey = process.env.OPENAI_API_KEY
+  if (!apiKey) {
+    throw new Error('OPENAI_API_KEY is not configured on the server')
+  }
+  return new OpenAI({ apiKey })
+}
+
 export async function POST(request: NextRequest) {
   try {
-    if (!process.env.OPENAI_API_KEY) {
-      return withCors(
-        NextResponse.json(
-          { error: 'OPENAI_API_KEY is not configured on the server' },
-          { status: 500 }
-        )
-      )
-    }
-
     const body: AnalyzeRequest = await request.json()
     const { image, produce_type, days_since_harvest, storage_condition, observations } = body
 
@@ -132,6 +127,8 @@ Output strictly in this JSON format:
         ],
       },
     ]
+
+    const openai = getOpenAIClient()
 
     const response = await openai.chat.completions.create({
       model: 'gpt-4o', // or 'gpt-4-turbo' if gpt-4o is not available
