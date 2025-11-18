@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  backend:
+    build:
+      context: ./smartsave
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - CORS_ALLOWED_ORIGIN=${CORS_ALLOWED_ORIGIN:-http://localhost:8080}
+    restart: unless-stopped
+
+  frontend:
+    build:
+      context: ./smartsave-dd-main
+      dockerfile: Dockerfile
+      args:
+        VITE_ANALYZE_API_URL: ${VITE_ANALYZE_API_URL:-http://backend:3000/api/analyze}
+    depends_on:
+      - backend
+    ports:
+      - "8080:4173"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
