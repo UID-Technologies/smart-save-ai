@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react'
 import { Camera, Upload, Scan, ChevronDown, ExternalLink } from 'lucide-react'
-import FreshnessAnalyzer from '@/components/FreshnessAnalyzer'
+import FreshnessAnalyzer from '../components/FreshnessAnalyzer'
 
 export default function Home() {
   return (
